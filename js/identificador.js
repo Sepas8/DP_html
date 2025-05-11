@@ -21,6 +21,60 @@ startBtn.addEventListener('click', init);
 stopBtn.addEventListener('click', stopAndShowResult);
 retryBtn.addEventListener('click', resetScanner);
 
+function stopAndShowResult() {
+    if (!isScanning) return;
+    
+    isScanning = false;
+    window.cancelAnimationFrame(predictionLoop);
+    
+    if (webcam) {
+        webcam.stop();
+    }
+    
+    if (lastPredictions.length > 0) {
+        // Ordenar predicciones
+        lastPredictions.sort((a, b) => b.probability - a.probability);
+        const bestMatch = lastPredictions[0];
+        
+        // Mostrar contenedor de resultados
+        const resultContainer = document.getElementById('scan-result');
+        const finalResult = document.getElementById('final-result');
+        resultContainer.style.display = 'block';
+        
+        // Buscar la plantilla correspondiente al pin identificado
+        const pinTemplate = document.querySelector(`.pin-info[data-pin-name="${bestMatch.className}"]`);
+        
+        if (pinTemplate) {
+            // Clonar la plantilla para no perder la original
+            const pinClone = pinTemplate.cloneNode(true);
+            
+            // Actualizar el porcentaje de confianza
+            const confidenceBadge = pinClone.querySelector('.confidence-percent');
+            confidenceBadge.textContent = (bestMatch.probability * 100).toFixed(1) + '%';
+            
+            // Insertar en el contenedor de resultados
+            finalResult.innerHTML = '';
+            finalResult.appendChild(pinClone);
+        } else {
+            // Si no encuentra la plantilla, mostrar mensaje básico
+            finalResult.innerHTML = `
+                <div class="basic-result">
+                    <h3>${bestMatch.className}</h3>
+                    <p>Probabilidad: ${(bestMatch.probability * 100).toFixed(1)}%</p>
+                    <p>No tenemos más información sobre este pin.</p>
+                    <a href="catalogo.html" class="btn">Buscar en catálogo</a>
+                </div>
+            `;
+        }
+    } else {
+        finalResult.innerHTML = "<p>No se detectó ningún pin. Intenta nuevamente.</p>";
+    }
+    
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    webcamContainer.innerHTML = '<p class="camera-placeholder">Cámara detenida</p>';
+}
+
 // Inicializar el escáner
 async function init() {
     if (isScanning) return;

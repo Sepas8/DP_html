@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identificador de Pines - Dulcito Pixel</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="images/logo.jpg" type="image/jpg">
+    
 </head>
 <body>
     <header class="pixel-header">
@@ -41,7 +43,6 @@
                     <p class="camera-placeholder">La cámara aparecerá aquí</p>
                 </div>
                 
-                <!-- Contenedor simplificado para las etiquetas -->
                 <div id="prediction-container"></div>
                 
                 <div id="scan-result" class="result-container">
@@ -50,6 +51,63 @@
                     <button id="retry-btn" class="btn">Intentar Nuevamente</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Plantillas de pines (ocultas) -->
+        <div class="pin-templates" style="display: none;">
+            <!-- Plantilla para Mario -->
+            <div class="pin-template" data-pin-name="Mario">
+                <div class="pin-result">
+                    <div class="pin-image-container">
+                        <img src="images/pins/mario.jpg" alt="Pin Mario" class="pin-image">
+                        <div class="confidence-badge">
+                            <span class="confidence-value">85%</span>
+                        </div>
+                    </div>
+                    <div class="pin-details">
+                        <h3>Super Mario Bros</h3>
+                        <div class="pin-meta">
+                            <span class="category">Videojuegos</span>
+                            <span class="price">$150 MXN</span>
+                        </div>
+                        <p class="description">Pin oficial de Mario Bros. Edición limitada 2023.</p>
+                        <ul class="features">
+                            <li>Material: Metal esmaltado</li>
+                            <li>Tamaño: 3cm</li>
+                            <li>Incluye certificado</li>
+                        </ul>
+                        <a href="catalogo.html?pin=mario" class="btn">Ver en Catálogo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plantilla para Zelda -->
+            <div class="pin-template" data-pin-name="Zelda">
+                <div class="pin-result">
+                    <div class="pin-image-container">
+                        <img src="images/pins/zelda.jpg" alt="Pin Zelda" class="pin-image">
+                        <div class="confidence-badge">
+                            <span class="confidence-value">85%</span>
+                        </div>
+                    </div>
+                    <div class="pin-details">
+                        <h3>Legend of Zelda</h3>
+                        <div class="pin-meta">
+                            <span class="category">Videojuegos</span>
+                            <span class="price">$180 MXN</span>
+                        </div>
+                        <p class="description">Exclusivo pin de la Trifuerza. Edición coleccionista.</p>
+                        <ul class="features">
+                            <li>Material: Aleación de zinc</li>
+                            <li>Tamaño: 2.8cm</li>
+                            <li>Acabado brillante</li>
+                        </ul>
+                        <a href="catalogo.html?pin=zelda" class="btn">Ver en Catálogo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Añade más plantillas para cada pin -->
         </div>
     </main>
 
