@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identificador de Pines - Dulcito Pixel</title>
     <link rel="icon" href="images/logo.jpg" type="image/jpg">
-    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header class="pixel-header">
@@ -42,13 +41,14 @@
                     <p class="camera-placeholder">La cámara aparecerá aquí</p>
                 </div>
                 
-                <div id="result-container" class="result-container hidden">
+                <!-- Contenedor simplificado para las etiquetas -->
+                <div id="prediction-container"></div>
+                
+                <div id="scan-result" class="result-container">
                     <h2>Resultado:</h2>
                     <div id="final-result" class="final-result"></div>
                     <button id="retry-btn" class="btn">Intentar Nuevamente</button>
                 </div>
-                
-                <div id="label-container" class="label-container hidden"></div>
             </div>
         </div>
     </main>
@@ -61,134 +61,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-    <script>
-        // Variables globales
-        const URL = "https://teachablemachine.withgoogle.com/models/oGgbu9X51/";
-        let model, webcam, maxPredictions;
-        let isPredicting = false;
-        
-        // Elementos del DOM
-        const startBtn = document.getElementById('start-btn');
-        const stopBtn = document.getElementById('stop-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const webcamContainer = document.getElementById('webcam-container');
-        const labelContainer = document.getElementById('label-container');
-        const resultContainer = document.getElementById('result-container');
-        const finalResult = document.getElementById('final-result');
-        
-        // Cargar el modelo de IA
-        async function loadModel() {
-            const modelURL = URL + "model.json";
-            const metadataURL = URL + "metadata.json";
-            model = await tmImage.load(modelURL, metadataURL);
-            maxPredictions = model.getTotalClasses();
-        }
-        
-        // Iniciar la cámara
-        async function startCamera() {
-            try {
-                // Configurar cámara
-                const flip = true;
-                webcam = new tmImage.Webcam(400, 400, flip);
-                await webcam.setup();
-                await webcam.play();
-                
-                // Actualizar UI
-                webcamContainer.innerHTML = '';
-                webcamContainer.appendChild(webcam.canvas);
-                document.querySelector('.camera-placeholder').style.display = 'none';
-                
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-                resultContainer.classList.add('hidden');
-                labelContainer.classList.remove('hidden');
-                
-                // Iniciar detección
-                isPredicting = true;
-                window.requestAnimationFrame(loop);
-            } catch (error) {
-                console.error("Error al iniciar cámara:", error);
-                alert("No se pudo acceder a la cámara. Asegúrate de permitir el acceso.");
-            }
-        }
-        
-        // Bucle de predicción
-        async function loop() {
-            if (isPredicting && webcam) {
-                webcam.update();
-                await predict();
-                window.requestAnimationFrame(loop);
-            }
-        }
-        
-        // Realizar predicción
-        async function predict() {
-            if (!webcam || !model) return;
-            
-            const prediction = await model.predict(webcam.canvas);
-            let highestProb = 0;
-            let bestMatch = '';
-            
-            // Encontrar la predicción con mayor probabilidad
-            for (let i = 0; i < maxPredictions; i++) {
-                if (prediction[i].probability > highestProb) {
-                    highestProb = prediction[i].probability;
-                    bestMatch = prediction[i].className;
-                }
-            }
-            
-            // Mostrar resultados si la probabilidad es mayor al 50%
-            if (highestProb > 0.5) {
-                labelContainer.innerHTML = `
-                    <div class="prediction">
-                        <strong>${bestMatch}</strong> (${(highestProb * 100).toFixed(1)}% de certeza)
-                    </div>
-                `;
-            }
-        }
-        
-        // Detener cámara y mostrar resultado final
-        function stopCamera() {
-            isPredicting = false;
-            
-            if (webcam) {
-                webcam.stop();
-                webcamContainer.innerHTML = '<p class="camera-placeholder">Cámara detenida</p>';
-            }
-            
-            // Mostrar resultado final
-            const currentPrediction = labelContainer.innerHTML;
-            if (currentPrediction) {
-                finalResult.innerHTML = currentPrediction;
-                resultContainer.classList.remove('hidden');
-            } else {
-                finalResult.innerHTML = '<p>No se detectó ningún pin. Intenta nuevamente.</p>';
-                resultContainer.classList.remove('hidden');
-            }
-            
-            labelContainer.classList.add('hidden');
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
-        }
-        
-        // Reiniciar el identificador
-        function resetScanner() {
-            resultContainer.classList.add('hidden');
-            labelContainer.innerHTML = '';
-            webcamContainer.innerHTML = '<p class="camera-placeholder">La cámara aparecerá aquí</p>';
-        }
-        
-        // Event Listeners
-        startBtn.addEventListener('click', async () => {
-            if (!model) await loadModel();
-            startCamera();
-        });
-        
-        stopBtn.addEventListener('click', stopCamera);
-        retryBtn.addEventListener('click', resetScanner);
-        
-        // Cargar el modelo al iniciar la página
-        window.addEventListener('load', loadModel);
-    </script>
+    <script src="js/identificador.js"></script>
 </body>
 </html>

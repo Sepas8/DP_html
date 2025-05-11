@@ -1,11 +1,11 @@
 // Variables globales
-let model, webcam, labelContainer, maxPredictions;
+let model, webcam, maxPredictions;
 let isScanning = false;
 let predictionLoop;
 let lastPredictions = [];
 
-// URL del modelo (reemplaza con tu modelo)
-const URL = "https://teachablemachine.withgoogle.com/models/oGgbu9X51/";
+// URL del modelo
+const MODEL_URL = "https://teachablemachine.withgoogle.com/models/oGgbu9X51/";
 
 // Elementos del DOM
 const startBtn = document.getElementById('start-btn');
@@ -14,7 +14,7 @@ const retryBtn = document.getElementById('retry-btn');
 const scanResult = document.getElementById('scan-result');
 const finalResult = document.getElementById('final-result');
 const webcamContainer = document.getElementById('webcam-container');
-const labelsContainer = document.getElementById('label-container');
+const predictionContainer = document.getElementById('prediction-container');
 
 // Event listeners
 startBtn.addEventListener('click', init);
@@ -28,33 +28,32 @@ async function init() {
     try {
         // Mostrar mensaje de carga
         finalResult.innerHTML = "Cargando modelo y cámara...";
+        scanResult.classList.add("active");
         
         // Cargar el modelo
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-        model = await tmImage.load(modelURL, metadataURL);
+        model = await tmImage.load(
+            MODEL_URL + "model.json",
+            MODEL_URL + "metadata.json"
+        );
         maxPredictions = model.getTotalClasses();
         
         // Configurar la cámara
-        const flip = true;
-        webcam = new tmImage.Webcam(400, 400, flip);
+        webcam = new tmImage.Webcam(400, 400, true); // width, height, flip
         await webcam.setup();
         await webcam.play();
         
-        // Limpiar el contenedor y agregar la cámara
+        // Limpiar contenedores
         webcamContainer.innerHTML = '';
-        webcamContainer.appendChild(webcam.canvas);
+        predictionContainer.innerHTML = '';
         
-        // Crear contenedor de etiquetas
-        labelContainer = document.createElement("div");
-        webcamContainer.appendChild(labelContainer);
+        // Agregar la cámara al contenedor
+        webcamContainer.appendChild(webcam.canvas);
         
         // Cambiar estado
         isScanning = true;
         startBtn.disabled = true;
         stopBtn.disabled = false;
         scanResult.classList.remove("active");
-        labelsContainer.style.display = "none";
         
         // Iniciar loop de predicción
         predictionLoop = window.requestAnimationFrame(loop);
@@ -62,6 +61,8 @@ async function init() {
     } catch (error) {
         console.error("Error al iniciar:", error);
         finalResult.innerHTML = "Error al iniciar la cámara. Asegúrate de dar permisos.";
+        scanResult.classList.add("active");
+        resetScanner();
     }
 }
 
@@ -76,24 +77,29 @@ async function loop() {
 
 // Realizar predicción
 async function predict() {
-    if (!isScanning) return;
+    if (!isScanning || !webcam.canvas) return;
     
-    const prediction = await model.predict(webcam.canvas);
-    lastPredictions = prediction;
-    
-    // Ordenar predicciones por probabilidad
-    prediction.sort((a, b) => b.probability - a.probability);
-    
-    // Mostrar solo la predicción principal temporalmente
-    if (prediction[0].probability > 0.5) {
-        labelContainer.innerHTML = `
-            <div class="prediction-main">
-                <strong>${prediction[0].className}</strong>: 
-                ${(prediction[0].probability * 100).toFixed(1)}% de coincidencia
-            </div>
-        `;
-    } else {
-        labelContainer.innerHTML = "<div>Enfoca un pin para identificarlo</div>";
+    try {
+        const predictions = await model.predict(webcam.canvas);
+        lastPredictions = predictions;
+        
+        // Ordenar predicciones por probabilidad
+        predictions.sort((a, b) => b.probability - a.probability);
+        
+        // Mostrar solo la predicción principal si supera el 50%
+        if (predictions[0].probability > 0.5) {
+            predictionContainer.innerHTML = `
+                <div class="prediction-result">
+                    <strong>${predictions[0].className}</strong>: 
+                    ${(predictions[0].probability * 100).toFixed(1)}% de coincidencia
+                </div>
+            `;
+        } else {
+            predictionContainer.innerHTML = "<div>Enfoca mejor el pin para identificarlo</div>";
+        }
+    } catch (error) {
+        console.error("Error en predicción:", error);
+        predictionContainer.innerHTML = "<div>Error al analizar la imagen</div>";
     }
 }
 
@@ -111,7 +117,7 @@ function stopAndShowResult() {
     }
     
     // Mostrar el mejor resultado
-    if (lastPredictions.length > 0) {
+    if (lastPredictions && lastPredictions.length > 0) {
         lastPredictions.sort((a, b) => b.probability - a.probability);
         const bestMatch = lastPredictions[0];
         
@@ -125,23 +131,29 @@ function stopAndShowResult() {
         finalResult.innerHTML = "<p>No se detectó ningún pin. Intenta nuevamente.</p>";
     }
     
-    // Cambiar estado de los botones
+    // Actualizar UI
     startBtn.disabled = false;
     stopBtn.disabled = true;
     scanResult.classList.add("active");
-    webcamContainer.innerHTML = ''; // Limpiar la cámara
+    webcamContainer.innerHTML = '<p class="camera-placeholder">Cámara detenida</p>';
+    predictionContainer.innerHTML = '';
 }
 
 // Reiniciar el escáner
 function resetScanner() {
-    scanResult.classList.remove("active");
-    labelsContainer.style.display = "none";
-    webcamContainer.innerHTML = '';
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
     isScanning = false;
     
     if (webcam) {
         webcam.stop();
+    }
+    
+    webcamContainer.innerHTML = '<p class="camera-placeholder">La cámara aparecerá aquí</p>';
+    predictionContainer.innerHTML = '';
+    scanResult.classList.remove("active");
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    
+    if (predictionLoop) {
+        window.cancelAnimationFrame(predictionLoop);
     }
 }
