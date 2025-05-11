@@ -689,7 +689,6 @@ body::after {
 /* ------------------------- */
 
 /* Contenedor principal */
-/* ESTILOS DEL IDENTIFICADOR DE PINES */
 .identificador-container {
     background-color: #000;
     border: 4px solid #FFA500;
@@ -697,18 +696,16 @@ body::after {
     margin: 2rem auto;
     max-width: 800px;
     text-align: center;
-    font-family: 'Press Start 2P', cursive;
 }
 
 .identificador-container p {
     color: #fff;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     margin-bottom: 1.5rem;
-    line-height: 1.5;
 }
 
 /* CONTENEDOR DE LA CÁMARA */
-#webcam-container {
+.webcam-container {
     width: 100%;
     max-width: 400px;
     height: 400px;
@@ -719,17 +716,15 @@ body::after {
     justify-content: center;
     background-color: #111;
     position: relative;
-    overflow: hidden;
 }
 
-#webcam-container .camera-placeholder {
+.camera-placeholder {
     color: #FFA500;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 1rem;
-    text-align: center;
 }
 
-/* GRUPO DE BOTONES */
+/* BOTONES */
 .button-group {
     display: flex;
     justify-content: center;
@@ -738,41 +733,39 @@ body::after {
     flex-wrap: wrap;
 }
 
-/* ESTILOS DE BOTONES */
-#start-btn, #stop-btn, #retry-btn {
+.btn {
     display: inline-block;
     background-color: #FFA500;
     color: #000;
     padding: 0.8rem 1.5rem;
     border: none;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     cursor: pointer;
     font-family: 'Press Start 2P', cursive;
     box-shadow: 4px 4px 0 #000;
     transition: all 0.2s;
-    min-width: 200px;
-    text-align: center;
+    min-width: 180px;
 }
 
-#start-btn:hover, #retry-btn:hover {
+.btn:hover {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 #000;
 }
 
-#stop-btn {
-    background-color: #e74c3c;
-}
-
-#stop-btn:hover {
-    background-color: #c0392b;
-}
-
-#start-btn:disabled, #stop-btn:disabled {
+.btn:disabled {
     background-color: #555;
     color: #888;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+.btn-stop {
+    background-color: #e74c3c;
+}
+
+.btn-stop:hover:not(:disabled) {
+    background-color: #c0392b;
 }
 
 /* CONTENEDOR DE PREDICCIONES */
@@ -785,11 +778,10 @@ body::after {
     color: #FFA500;
     font-size: 0.8rem;
     max-width: 400px;
-    text-align: center;
 }
 
 /* RESULTADOS DEL ESCANEO */
-#scan-result {
+.result-container {
     display: none;
     margin: 2rem auto 0;
     padding: 1.5rem;
@@ -798,33 +790,31 @@ body::after {
     max-width: 500px;
 }
 
-#scan-result.active {
+.result-container.active {
     display: block;
 }
 
-#scan-result h2 {
+.result-container h2 {
     color: #FFA500;
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-bottom: 1rem;
-    text-align: center;
 }
 
-#final-result {
+.final-result {
     padding: 1rem;
     background-color: #000;
     border: 2px solid #FFA500;
     margin: 1rem 0;
     color: #fff;
-    font-size: 0.8rem;
 }
 
-#final-result h3 {
+.final-result h3 {
     color: #FFA500;
     margin-bottom: 0.5rem;
     font-size: 1rem;
 }
 
-#final-result a {
+.final-result a {
     display: inline-block;
     margin-top: 1rem;
     color: #FFA500;
@@ -832,7 +822,7 @@ body::after {
     font-weight: bold;
 }
 
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .identificador-container {
         padding: 1rem;
@@ -844,18 +834,130 @@ body::after {
         align-items: center;
     }
     
-    #start-btn, #stop-btn, #retry-btn {
+    .btn {
         width: 100%;
-        max-width: 300px;
     }
     
-    #webcam-container {
+    .webcam-container {
         height: 300px;
         max-width: 300px;
     }
     
     #prediction-container {
         font-size: 0.7rem;
-        padding: 0.8rem;
+    }
+}
+
+/* Estilos para los resultados */
+.result-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #111;
+    border: 3px solid #FFA500;
+    border-radius: 8px;
+}
+
+.final-result {
+    margin-top: 15px;
+}
+
+.pin-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.result-image-container {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+    border: 2px solid #FFA500;
+    padding: 10px;
+    background: #000;
+}
+
+.pin-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.confidence-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #FFA500;
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.pin-details {
+    flex: 2;
+    min-width: 250px;
+    color: #fff;
+}
+
+.pin-details h3 {
+    color: #FFA500;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.pin-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.pin-category {
+    background: #333;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.pin-price {
+    color: #FFA500;
+    font-weight: bold;
+}
+
+.pin-description {
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.features-list {
+    margin-top: 10px;
+    padding-left: 20px;
+    color: #FFA500;
+}
+
+.features-list li {
+    margin-bottom: 5px;
+}
+
+.basic-result {
+    text-align: center;
+    padding: 20px;
+}
+
+.basic-result h3 {
+    color: #FFA500;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .pin-info {
+        flex-direction: column;
+    }
+    
+    .result-image-container {
+        min-width: 100%;
     }
 }
