@@ -6,81 +6,540 @@
     <title>PinStore - Catálogo</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">PinStore</a>
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="catalogo.html" class="active">Catálogo</a></li>
-                        <li><a href="contacto.html">Contacto</a></li>
-                        <li><a href="identificador.html">Identificador</a></li>
-                    </ul>
-                </nav>
-            </div>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="images/logo.jpg" alt="Logo PixelStore" class="pixel-logo">
+                <span class="pixel-text">DULCITO PIXEL</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogo.html" class="active">Catálogo</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="identificador.html">Identificador</a></li>
+                    <li>
+                        <div class="cart-icon-container">
+                            <span id="cart-count">0</span>
+                            <svg class="cart-icon" viewBox="0 0 24 24">
+                                <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
+                            </svg>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>
+
+<div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Tu Carrito</h2>
+        <div id="cart-items" class="cart-items">
+            <!-- Los productos del carrito aparecerán aquí -->
+        </div>
+        <div class="cart-total">
+            <p>Total: <span id="cart-total">$0.00</span></p>
+        </div>
+        <button id="checkout-btn" class="btn">Proceder al Pago</button>
+    </div>
+</div>
+
+<body>
+    
 
     <main>
         <div class="container">
             <h1 class="section-title">Nuestro Catálogo de Pines</h1>
+            
+            <!-- Sección de Filtros (Añade esto) -->
+            <section class="filters-section">
+    <div class="filter-controls">
+        <div class="filter-group">
+            <h3>Precio</h3>
+            <div class="price-range">
+                <input type="range" id="priceRange" min="0" max="50000" value="15000" step="500">
+                <span id="priceValue">Hasta $50000</span>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <h3>Categorías</h3>
+            <div class="tag-filters">
+                <!-- Asegúrate que estos valores coincidan con los data-tags de tus pines -->
+                <label><input type="checkbox" name="tag" value="peliculas"> Películas</label>
+                <label><input type="checkbox" name="tag" value="series"> Series</label>
+                <label><input type="checkbox" name="tag" value="animacion"> Animación</label>
+                <label><input type="checkbox" name="tag" value="animado"> Animado</label>
+                <label><input type="checkbox" name="tag" value="musica"> Música</label>
+                <label><input type="checkbox" name="tag" value="humor"> Humor</label>
+                <label><input type="checkbox" name="tag" value="videojuegos"> Videojuegos</label>
+                <label><input type="checkbox" name="tag" value="comida"> Comida</label>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <h3>Ordenar por</h3>
+            <select id="sortOptions" class="sort-select">
+                <option value="default">Predeterminado</option>
+                <option value="price-asc">Precio: Menor a Mayor</option>
+                <option value="price-desc">Precio: Mayor a Menor</option>
+                <option value="name-asc">Nombre: A-Z</option>
+                <option value="name-desc">Nombre: Z-A</option>
+            </select>
+        </div>
+        
+        <button id="resetFilters" class="btn btn-outline">Resetear filtros</button>
+    </div>
+</section>
             <div class="catalog">
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1585916420730-1ba60a9f0f6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin de viaje" class="pin-image">
+                <!-- Pin 1 - Añade data-price y data-tags -->
+                <div class="pin-card" data-id="1" data-price="15000" data-tags="viaje aventura mundo">
+                    <img src="images/burns_sirena.jpg" alt="Pin de viaje" class="pin-image">
                     <div class="pin-info">
-                        <h3 class="pin-title">Pin Viajero</h3>
-                        <p class="pin-price">$12.99</p>
-                        <p class="pin-description">Perfecto para los amantes de los viajes y aventuras.</p>
+                        <h3 class="pin-title">Mr Burns Sirena</h3>
+                        <p class="pin-price">$15000</p>
+                        <div class="pin-tags">
+                            <span class="tag">Simpsons</span>
+                            <span class="tag">series</span>
+                            <span class="tag">Animado</span>
+                        </div>
+                        <p class="pin-description">Pin con referencia a capitulos de Los Simpsons</p>
                         <button class="btn">Añadir al carrito</button>
                     </div>
                 </div>
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1575505586569-646b2ca898fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin musical" class="pin-image">
+                
+                <!-- Pin 2 -->
+                <div class="pin-card" data-id="2" data-price="30000" data-tags="Combo corazones">
+                    <img src="images/combo_corazones.jpg" alt="Combo corazones" class="pin-image">
                     <div class="pin-info">
-                        <h3 class="pin-title">Pin Musical</h3>
-                        <p class="pin-price">$10.99</p>
-                        <p class="pin-description">Para los apasionados por la música y las notas.</p>
+                        <h3 class="pin-title">Combo corazones</h3>
+                        <p class="pin-price">$30000</p>
+                        <div class="pin-tags">
+                            <span class="tag">Combo</span>
+                            <span class="tag">Naturaleza</span>
+                            <span class="tag">Arte</span>
+                        </div>
+                        <p class="pin-description">Pin con referencia a capitulos de Los Simpsons</p>
                         <button class="btn">Añadir al carrito</button>
                     </div>
                 </div>
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1584824486539-53bb4646bdbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin de gato" class="pin-image">
+                
+                <!-- Pin 3 -->
+                <div class="pin-card" data-id="3" data-price="40000" data-tags="dinosaurio">
+                    <img src="images/combo_dinosaurios.jpg" alt="Pin de viaje" class="pin-image">
                     <div class="pin-info">
-                        <h3 class="pin-title">Pin Gatuno</h3>
-                        <p class="pin-price">$9.99</p>
-                        <p class="pin-description">Ideal para los amantes de los felinos.</p>
+                        <h3 class="pin-title">Combo Dinosaurios</h3>
+                        <p class="pin-price">$40000</p>
+                        <div class="pin-tags">
+                            <span class="tag">Naturaleza</span>
+                            
+                            <span class="tag">Animado</span>
+                        </div>
+                        <p class="pin-description">Pin con referencia a capitulos de Los Simpsons</p>
                         <button class="btn">Añadir al carrito</button>
                     </div>
                 </div>
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin de libro" class="pin-image">
+                
+                <!-- Pin 4 - Asegúrate que la imagen existe en tu carpeta images/ -->
+                <div class="pin-card" data-id="4" data-price="15000" data-tags="peliculas comedia adolescentes">
+                    <img src="images/burn_book.jpg" alt="Burn Book, chicas pesadas" class="pin-image">
                     <div class="pin-info">
-                        <h3 class="pin-title">Pin Literario</h3>
-                        <p class="pin-price">$11.99</p>
+                        <h3 class="pin-title">Burn Book, chicas pesadas</h3>
+                        <p class="pin-price">$15000</p>
+                        <div class="pin-tags">
+                            <span class="tag">películas</span>
+                            <span class="tag">Comedia</span>
+                            <span class="tag">Animado</span>
+                        </div>
+                        <p class="pin-description">Libro de chismes de la pelicula Chicas Pesadas.</p>
+                        <button class="btn">Añadir al carrito</button>
+                    </div>
+                </div>
+                
+                <!-- Pin 5 -->
+                <div class="pin-card" data-id="5" data-price="40000" data-tags="Combo Frida">
+                    <img src="images/combo_frida.jpg" alt="Combo Frida" class="pin-image">
+                    <div class="pin-info">
+                        <h3 class="pin-title">Combo Frida</h3>
+                        <p class="pin-price">$40000</p>
+                        <div class="pin-tags">
+                            <span class="tag">películas</span>
+                            <span class="tag">comedia</span>
+                            <span class="tag">adolescentes</span>
+                        </div>
                         <p class="pin-description">Para los que aman perderse entre las páginas de un buen libro.</p>
                         <button class="btn">Añadir al carrito</button>
                     </div>
                 </div>
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1585773690161-7b1cd0accfcf?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin de café" class="pin-image">
+                
+                <!-- Pin 6 -->
+                <div class="pin-card" data-id="6" data-price="15000" data-tags="naturaleza comida salud">
+                    <img src="images/aguacate.jpg" alt="Aguacate" class="pin-image">
                     <div class="pin-info">
-                        <h3 class="pin-title">Pin Cafetero</h3>
-                        <p class="pin-price">$8.99</p>
-                        <p class="pin-description">Esencial para los amantes del café y sus momentos.</p>
-                        <button class="btn">Añadir al carrito</button>
-                    </div>
-                </div>
-                <div class="pin-card">
-                    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Pin de naturaleza" class="pin-image">
-                    <div class="pin-info">
-                        <h3 class="pin-title">Pin Natural</h3>
-                        <p class="pin-price">$13.99</p>
+                        <h3 class="pin-title">Pin de Aguacate</h3>
+                        <p class="pin-price">$15000</p>
+                        <div class="pin-tags">
+                            <span class="tag">naturaleza</span>
+                            <span class="tag">comida</span>
+                            <span class="tag">salud</span>
+                        </div>
                         <p class="pin-description">Representa la belleza y diversidad de la naturaleza.</p>
                         <button class="btn">Añadir al carrito</button>
                     </div>
                 </div>
+                <!-- Pin 7 -->
+                <div class="pin-card" data-id="7" data-price="50000" data-tags="Combo mensajes">
+                    <img src="images/combo_mensaje.jpg" alt="Mensajes" class="pin-image">
+                    <div class="pin-info">
+                        <h3 class="pin-title">Combo mensajes</h3>
+                        <p class="pin-price">$50000</p>
+                        <div class="pin-tags">
+                            <span class="tag">Mensajes</span>
+                            <span class="tag">Animado</span>
+                            <span class="tag">Arte</span>
+                        </div>
+                        <p class="pin-description">Representa la belleza y diversidad de la naturaleza.</p>
+                        <button class="btn">Añadir al carrito</button>
+                    </div>
+                </div>
+                <!-- Pin 8 -->
+                <div class="pin-card" data-id="8" data-price="20000" data-tags="Comida">
+                    <img src="images/combo_zanahorias.jpg" alt="Combo Zanahoria" class="pin-image">
+                    <div class="pin-info">
+                        <h3 class="pin-title">Combo Zanahoria Musculosa</h3>
+                        <p class="pin-price">$20000</p>
+                        <div class="pin-tags">
+                            <span class="tag">naturaleza</span>
+                            <span class="tag">comida</span>
+                            <span class="tag">salud</span>
+                        </div>
+                        <p class="pin-description">Representa la belleza y diversidad de la naturaleza.</p>
+                        <button class="btn">Añadir al carrito</button>
+                    </div>
+                </div>
+                <!-- Pin 9 -->
+                <div class="pin-card" data-id="9" data-price="15000" data-tags="Cartoon animado Series">
+                    <img src="images/coraje_perro.jpg" alt="Coraje" class="pin-image">
+                    <div class="pin-info">
+                        <h3 class="pin-title">Coraje el Perro Cobarde</h3>
+                        <p class="pin-price">$15000</p>
+                        <div class="pin-tags">
+                            <span class="tag">animales</span>
+                            <span class="tag">animado</span>
+                            <span class="tag">series</span>
+                        </div>
+                        <p class="pin-description">Personaje de la serie famosa de Cartoon Network</p>
+                        <button class="btn">Añadir al carrito</button>
+                    </div>
+                </div>
+                <!-- Huevo Aguacate -->
+<div class="pin-card" data-id="10" data-price="15000" data-tags="comida saludable vegetariano">
+    <img src="images/huevo_aguacate.jpg" alt="Huevo Aguacate" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Huevo Aguacate</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Comida</span>
+            <span class="tag">Saludable</span>
+            <span class="tag">Vegetariano</span>
+        </div>
+        <p class="pin-description">Pin de un delicioso desayuno saludable.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+
+
+<!-- Mickey -->
+<div class="pin-card" data-id="11" data-price="15000" data-tags="animacion disney infantil">
+    <img src="images/mickey.jpg" alt="Mickey" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Mickey</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animación</span>
+            <span class="tag">Disney</span>
+            <span class="tag">Infantil</span>
+        </div>
+        <p class="pin-description">Pin del clásico personaje de Disney.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Pacman -->
+<div class="pin-card" data-id="12" data-price="15000" data-tags="videojuegos retro arcade">
+    <img src="images/pacman.jpg" alt="Pacman" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Pacman</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Videojuegos</span>
+            <span class="tag">Retro</span>
+            <span class="tag">Arcade</span>
+        </div>
+        <p class="pin-description">Pin del clásico juego de arcade.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Pifia -->
+<div class="pin-card" data-id="13" data-price="15000" data-tags="humor comedia errores">
+    <img src="images/pina.jpg" alt="Piña" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Piña</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Humor</span>
+            <span class="tag">Comedia</span>
+            <span class="tag">comida</span>
+        </div>
+        <p class="pin-description">Pin con temática de errores graciosos.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Pink Floyd -->
+<div class="pin-card" data-id="14" data-price="15000" data-tags="musica rock bandas">
+    <img src="images/pink_floid.jpg" alt="Pink Floyd" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Pink Floyd</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Música</span>
+            <span class="tag">Rock</span>
+            <span class="tag">Bandas</span>
+        </div>
+        <p class="pin-description">Pin de la legendaria banda de rock.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Programación -->
+<div class="pin-card" data-id="15" data-price="15000" data-tags="tecnologia codigo desarrollo">
+    <img src="images/programacion.jpg" alt="Programación" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Programación</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Tecnología</span>
+            <span class="tag">Código</span>
+            <span class="tag">Desarrollo</span>
+        </div>
+        <p class="pin-description">Pin para amantes de la programación.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Rana Combo -->
+<div class="pin-card" data-id="16" data-price="15000" data-tags="animales humor memes">
+    <img src="images/rana_combo.jpg" alt="Rana Combo" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Rana Combo</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animales</span>
+            <span class="tag">Humor</span>
+            <span class="tag">Memes</span>
+        </div>
+        <p class="pin-description">Pin de la popular rana de memes.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Rana Destripada -->
+<div class="pin-card" data-id="17" data-price="15000" data-tags="humor absurdo memes">
+    <img src="images/rana_destripada.jpg" alt="Rana Destripada" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Rana Destripada</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Humor</span>
+            <span class="tag">Absurdo</span>
+            <span class="tag">Memes</span>
+        </div>
+        <p class="pin-description">Pin con humor absurdo de internet.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Rana Fuck -->
+<div class="pin-card" data-id="18" data-price="15000" data-tags="humor memes irreverente">
+    <img src="images/rana_fuck.jpg" alt="Rana Fuck" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Rana Fuck</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Humor</span>
+            <span class="tag">Memes</span>
+            <span class="tag">Irreverente</span>
+        </div>
+        <p class="pin-description">Pin con actitud irreverente.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Retro Juego -->
+<div class="pin-card" data-id="19" data-price="15000" data-tags="videojuegos retro nostalgia">
+    <img src="images/retro_juego.jpg" alt="Retro Juego" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Retro Juego</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Videojuegos</span>
+            <span class="tag">Retro</span>
+            <span class="tag">Nostalgia</span>
+        </div>
+        <p class="pin-description">Pin de clásicos videojuegos retro.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Rick -->
+<div class="pin-card" data-id="20" data-price="15000" data-tags="animacion ciencia-ficcion comedia">
+    <img src="images/rick.jpg" alt="Rick" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Rick</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animación</span>
+            <span class="tag">Ciencia Ficción</span>
+            <span class="tag">Comedia</span>
+        </div>
+        <p class="pin-description">Pin del personaje de la serie animada.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Shit Happens -->
+<div class="pin-card" data-id="21" data-price="15000" data-tags="humor frase irreverente">
+    <img src="images/shit_happens.jpg" alt="Shit Happens" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Shit Happens</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Humor</span>
+            <span class="tag">Frase</span>
+            <span class="tag">Irreverente</span>
+        </div>
+        <p class="pin-description">Pin con frase de humor negro.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Snoopy Astro -->
+<div class="pin-card" data-id="22" data-price="15000" data-tags="animacion perros espacio">
+    <img src="images/snoopy_astro.jpg" alt="Snoopy Astro" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Snoopy Astro</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animación</span>
+            <span class="tag">Perros</span>
+            <span class="tag">Espacio</span>
+        </div>
+        <p class="pin-description">Pin de Snoopy como astronauta.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Snoopy -->
+<div class="pin-card" data-id="23" data-price="15000" data-tags="animacion perros clasico">
+    <img src="images/snoopy.jpg" alt="Snoopy" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Snoopy</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animación</span>
+            <span class="tag">Perros</span>
+            <span class="tag">Clásico</span>
+        </div>
+        <p class="pin-description">Pin del clásico personaje animado.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Star Wars -->
+<div class="pin-card" data-id="24" data-price="15000" data-tags="ciencia-ficcion peliculas espacio">
+    <img src="images/starwars.jpg" alt="Star Wars" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Star Wars</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Ciencia Ficción</span>
+            <span class="tag">Películas</span>
+            <span class="tag">Espacio</span>
+        </div>
+        <p class="pin-description">Pin de la famosa saga espacial.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Teen Titans -->
+<div class="pin-card" data-id="25" data-price="15000" data-tags="animacion superheroes tv">
+    <img src="images/teen_titans.jpg" alt="Teen Titans" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Teen Titans</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Animación</span>
+            <span class="tag">Superhéroes</span>
+            <span class="tag">TV</span>
+        </div>
+        <p class="pin-description">Pin de los jóvenes titanes.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- Televisor -->
+<div class="pin-card" data-id="26" data-price="15000" data-tags="tecnologia retro nostalgia">
+    <img src="images/televisor.jpg" alt="Televisor" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">Televisor</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Tecnología</span>
+            <span class="tag">Retro</span>
+            <span class="tag">Nostalgia</span>
+        </div>
+        <p class="pin-description">Pin de un clásico televisor antiguo.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<!-- World -->
+<div class="pin-card" data-id="27" data-price="15000" data-tags="geografia mundo viajes">
+    <img src="images/world.jpg" alt="World" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">World</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">Geografía</span>
+            <span class="tag">Mundo</span>
+            <span class="tag">Viajes</span>
+        </div>
+        <p class="pin-description">Pin con diseño del planeta Tierra.</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
+<div class="pin-card" data-id="27" data-price="15000" data-tags="series cartoon futuro animado animacion">
+    <img src="images/fray.jpg" alt="World" class="pin-image">
+    <div class="pin-info">
+        <h3 class="pin-title">FRay</h3>
+        <p class="pin-price">$15000</p>
+        <div class="pin-tags">
+            <span class="tag">series</span>
+            <span class="tag">animado</span>
+            <span class="tag">animacion</span>
+        </div>
+        <p class="pin-description">Protagonistae la famosa serie Futurama</p>
+        <button class="btn">Añadir al carrito</button>
+    </div>
+</div>
+
             </div>
         </div>
     </main>
@@ -92,5 +551,10 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/cart.js"></script>
+
+
+    
 </body>
 </html>
