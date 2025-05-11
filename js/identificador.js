@@ -1,63 +1,147 @@
-// Identificador de pines con Teachable Machine
-const URL = "https://teachablemachine.withgoogle.com/models/oGgbu9X51/";
-
+// Variables globales
 let model, webcam, labelContainer, maxPredictions;
+let isScanning = false;
+let predictionLoop;
+let lastPredictions = [];
 
-// Cargar el modelo de imagen y configurar la webcam
+// URL del modelo (reemplaza con tu modelo)
+const URL = "https://teachablemachine.withgoogle.com/models/tu-modelo/";
+
+// Elementos del DOM
+const startBtn = document.getElementById('start-btn');
+const stopBtn = document.getElementById('stop-btn');
+const retryBtn = document.getElementById('retry-btn');
+const scanResult = document.getElementById('scan-result');
+const finalResult = document.getElementById('final-result');
+const webcamContainer = document.getElementById('webcam-container');
+const labelsContainer = document.getElementById('label-container');
+
+// Event listeners
+startBtn.addEventListener('click', init);
+stopBtn.addEventListener('click', stopAndShowResult);
+retryBtn.addEventListener('click', resetScanner);
+
+// Inicializar el escáner
 async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-
-    // Cargar el modelo y metadatos
-    model = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = model.getTotalClasses();
-
-    // Configurar la webcam
-    const flip = true; // si voltear la webcam
-    webcam = new tmImage.Webcam(400, 400, flip); // ancho, alto, voltear
-    await webcam.setup(); // solicitar acceso a la webcam
-    await webcam.play();
-    window.requestAnimationFrame(loop);
-
-    // Añadir elementos al DOM
-    const webcamContainer = document.getElementById("webcam-container");
-    webcamContainer.innerHTML = ''; // Limpiar contenedor
-    webcamContainer.appendChild(webcam.canvas);
+    if (isScanning) return;
     
-    labelContainer = document.getElementById("label-container");
-    labelContainer.innerHTML = ''; // Limpiar contenedor
-    
-    for (let i = 0; i < maxPredictions; i++) {
-        labelContainer.appendChild(document.createElement("div"));
+    try {
+        // Mostrar mensaje de carga
+        finalResult.innerHTML = "Cargando modelo y cámara...";
+        
+        // Cargar el modelo
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+        
+        // Configurar la cámara
+        const flip = true;
+        webcam = new tmImage.Webcam(400, 400, flip);
+        await webcam.setup();
+        await webcam.play();
+        
+        // Limpiar el contenedor y agregar la cámara
+        webcamContainer.innerHTML = '';
+        webcamContainer.appendChild(webcam.canvas);
+        
+        // Crear contenedor de etiquetas
+        labelContainer = document.createElement("div");
+        webcamContainer.appendChild(labelContainer);
+        
+        // Cambiar estado
+        isScanning = true;
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        scanResult.classList.remove("active");
+        labelsContainer.style.display = "none";
+        
+        // Iniciar loop de predicción
+        predictionLoop = window.requestAnimationFrame(loop);
+        
+    } catch (error) {
+        console.error("Error al iniciar:", error);
+        finalResult.innerHTML = "Error al iniciar la cámara. Asegúrate de dar permisos.";
     }
 }
 
+// Loop de predicción
 async function loop() {
-    webcam.update(); // actualizar el frame de la webcam
+    if (!isScanning) return;
+    
+    webcam.update();
     await predict();
-    window.requestAnimationFrame(loop);
+    predictionLoop = window.requestAnimationFrame(loop);
 }
 
-// Ejecutar la imagen de la webcam a través del modelo de imagen
+// Realizar predicción
 async function predict() {
-    // predict puede tomar una imagen, video o elemento canvas
-    const prediction = await model.predict(webcam.canvas);
+    if (!isScanning) return;
     
-    // Ordenar predicciones por probabilidad (de mayor a menor)
+    const prediction = await model.predict(webcam.canvas);
+    lastPredictions = prediction;
+    
+    // Ordenar predicciones por probabilidad
     prediction.sort((a, b) => b.probability - a.probability);
     
-    for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction = `
-            <strong>${prediction[i].className}</strong>: 
-            ${(prediction[i].probability * 100).toFixed(2)}% de coincidencia
+    // Mostrar solo la predicción principal temporalmente
+    if (prediction[0].probability > 0.5) {
+        labelContainer.innerHTML = `
+            <div class="prediction-main">
+                <strong>${prediction[0].className}</strong>: 
+                ${(prediction[0].probability * 100).toFixed(1)}% de coincidencia
+            </div>
         `;
-        labelContainer.childNodes[i].innerHTML = classPrediction;
+    } else {
+        labelContainer.innerHTML = "<div>Enfoca un pin para identificarlo</div>";
+    }
+}
+
+// Detener y mostrar resultado final
+function stopAndShowResult() {
+    if (!isScanning) return;
+    
+    // Cancelar el loop
+    isScanning = false;
+    window.cancelAnimationFrame(predictionLoop);
+    
+    // Detener la cámara
+    if (webcam) {
+        webcam.stop();
+    }
+    
+    // Mostrar el mejor resultado
+    if (lastPredictions.length > 0) {
+        lastPredictions.sort((a, b) => b.probability - a.probability);
+        const bestMatch = lastPredictions[0];
         
-        // Resaltar la predicción con mayor probabilidad
-        if (i === 0 && prediction[i].probability > 0.5) {
-            labelContainer.childNodes[i].style.backgroundColor = "#27ae60";
-        } else {
-            labelContainer.childNodes[i].style.backgroundColor = "#f39c12";
-        }
+        finalResult.innerHTML = `
+            <h3>${bestMatch.className}</h3>
+            <p>Probabilidad: ${(bestMatch.probability * 100).toFixed(1)}%</p>
+            <p>Descripción del pin...</p>
+            <a href="catalogo.html" class="btn">Ver en catálogo</a>
+        `;
+    } else {
+        finalResult.innerHTML = "<p>No se detectó ningún pin. Intenta nuevamente.</p>";
+    }
+    
+    // Cambiar estado de los botones
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    scanResult.classList.add("active");
+    webcamContainer.innerHTML = ''; // Limpiar la cámara
+}
+
+// Reiniciar el escáner
+function resetScanner() {
+    scanResult.classList.remove("active");
+    labelsContainer.style.display = "none";
+    webcamContainer.innerHTML = '';
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    isScanning = false;
+    
+    if (webcam) {
+        webcam.stop();
     }
 }

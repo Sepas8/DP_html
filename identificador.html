@@ -8,23 +8,23 @@
 </head>
 <body>
     <header class="pixel-header">
-    <div class="container">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <img src="images/logo.jpg" alt="Logo PixelStore" class="logo-img">
-                <span class="pixel-text">DULCITO PIXEL</span>
-            </a>
-            <nav class="pixel-nav">
-                <ul>
-                    <li><a href="index.html" class="active">INICIO</a></li>
-                    <li><a href="catalogo.html">CATÁLOGO</a></li>
-                    <li><a href="contacto.html">CONTACTO</a></li>
-                    <li><a href="identificador.html">IDENTIFICADOR</a></li>
-                </ul>
-            </nav>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="images/logo.jpg" alt="Logo PixelStore" class="logo-img">
+                    <span class="pixel-text">DULCITO PIXEL</span>
+                </a>
+                <nav class="pixel-nav">
+                    <ul>
+                        <li><a href="index.html">INICIO</a></li>
+                        <li><a href="catalogo.html">CATÁLOGO</a></li>
+                        <li><a href="contacto.html">CONTACTO</a></li>
+                        <li><a href="identificador.html" class="active">IDENTIFICADOR</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
     <main>
         <div class="container">
@@ -32,8 +32,19 @@
                 <h1 class="section-title">Identificador de Pines</h1>
                 <p>Usa tu cámara para identificar pines de nuestra colección y obtener información sobre ellos.</p>
                 
-                <button type="button" onclick="init()" class="btn">Iniciar Identificador</button>
+                <div class="button-group">
+                    <button type="button" id="start-btn" class="btn">Iniciar Identificador</button>
+                    <button type="button" id="stop-btn" class="btn btn-stop" disabled>Detener y Mostrar Resultado</button>
+                </div>
+                
                 <div id="webcam-container" class="webcam-container"></div>
+                
+                <div id="scan-result" class="scan-result">
+                    <h2>Resultado del Escaneo:</h2>
+                    <div id="final-result" class="final-result"></div>
+                    <button id="retry-btn" class="btn btn-retry">Intentar Nuevamente</button>
+                </div>
+                
                 <div id="label-container" class="label-container"></div>
             </div>
         </div>
