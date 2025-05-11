@@ -5,7 +5,7 @@ let predictionLoop;
 let lastPredictions = [];
 
 // URL del modelo (reemplaza con tu modelo)
-const URL = "https://teachablemachine.withgoogle.com/models/tu-modelo/";
+const URL = "https://teachablemachine.withgoogle.com/models/oGgbu9X51/";
 
 // Elementos del DOM
 const startBtn = document.getElementById('start-btn');
