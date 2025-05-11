@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinStore - Identificador de Pines</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">PinStore</a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="catalogo.html">Catálogo</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="identificador.html" class="active">Identificador</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="identificador-container">
+                <h1 class="section-title">Identificador de Pines</h1>
+                <p>Usa tu cámara para identificar pines de nuestra colección y obtener información sobre ellos.</p>
+                
+                <button type="button" onclick="init()" class="btn">Iniciar Identificador</button>
+                <div id="webcam-container" class="webcam-container"></div>
+                <div id="label-container" class="label-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 PinStore - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script src="js/identificador.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
