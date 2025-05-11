@@ -204,6 +204,7 @@ main {
     padding: 0.3rem 0.6rem;
     margin-bottom: 0.5rem;
     font-size: 0.8rem;
+    color: #000;
 }
 
 .pin-description {
@@ -560,6 +561,18 @@ body::after {
     background-color: #2980b9;
 }
 
+/* CONTENEDOR DE LA CÁMARA */
+#webcam-container {
+    
+    overflow: hidden; /* Esto evita que el contenido se salga */
+}
+
+#webcam-container canvas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Mantiene la proporción */
+}
+
 .webcam-container {
     margin: 20px auto;
     width: 100%;
@@ -845,119 +858,5 @@ body::after {
     
     #prediction-container {
         font-size: 0.7rem;
-    }
-}
-
-/* Estilos para los resultados */
-.result-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #111;
-    border: 3px solid #FFA500;
-    border-radius: 8px;
-}
-
-.final-result {
-    margin-top: 15px;
-}
-
-.pin-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.result-image-container {
-    flex: 1;
-    min-width: 250px;
-    position: relative;
-    border: 2px solid #FFA500;
-    padding: 10px;
-    background: #000;
-}
-
-.pin-image {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.confidence-badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: #FFA500;
-    color: #000;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.pin-details {
-    flex: 2;
-    min-width: 250px;
-    color: #fff;
-}
-
-.pin-details h3 {
-    color: #FFA500;
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-}
-
-.pin-meta {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.pin-category {
-    background: #333;
-    padding: 3px 8px;
-    border-radius: 4px;
-}
-
-.pin-price {
-    color: #FFA500;
-    font-weight: bold;
-}
-
-.pin-description {
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.features-list {
-    margin-top: 10px;
-    padding-left: 20px;
-    color: #FFA500;
-}
-
-.features-list li {
-    margin-bottom: 5px;
-}
-
-.basic-result {
-    text-align: center;
-    padding: 20px;
-}
-
-.basic-result h3 {
-    color: #FFA500;
-    margin-bottom: 10px;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .pin-info {
-        flex-direction: column;
-    }
-    
-    .result-image-container {
-        min-width: 100%;
     }
 }
