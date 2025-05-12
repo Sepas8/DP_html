@@ -1,0 +1,82 @@
+{
+    "pins": [
+        {
+            "id": "fray",
+            "nombre": "Fray",
+            "imagen": "images/Fray.jpg",
+            "categoria": "Videojuegos",
+            "precio": "$15000 cop",
+            "descripcion": "Pin oficial de Fray, famoso personaje de Futurama",
+            "caracteristicas": [
+                "Material: Metal esmaltado",
+                "Tamaño: 3cm",
+                "Disponible"
+            ]
+        },
+        {
+            "id": "rana fuckyou",
+            "nombre": "Rana Fuck You",
+            "imagen": "images/rana_fuck.jpg",
+            "categoria": "Humor",
+            "precio": "$18,000 cop",
+            "descripcion": "Pin de la famosa rana con actitud rebelde",
+            "caracteristicas": [
+                "Material: Metal esmaltado",
+                "Tamaño: 3cm",
+                "Diseño irreverente"
+            ]
+        },
+        {
+            "id": "rana fancy",
+            "nombre": "Rana Fancy",
+            "imagen": "images/rana_fancy.jpg",
+            "categoria": "Moda",
+            "precio": "$16,000 cop",
+            "descripcion": "Elegante rana con estilo sofisticado",
+            "caracteristicas": [
+                "Material: Aleación de zinc",
+                "Tamaño: 2.8cm",
+                "Acabado brillante"
+            ]
+        },
+        {
+            "id": "deadpool",
+            "nombre": "Deadpool",
+            "imagen": "images/deadpool.jpg",
+            "categoria": "Superhéroes",
+            "precio": "$20,000 cop",
+            "descripcion": "El antihéroe más sarcástico de Marvel",
+            "caracteristicas": [
+                "Material: Metal esmaltado",
+                "Tamaño: 3.2cm",
+                "Edición limitada"
+            ]
+        },
+        {
+            "id": "picachu",
+            "nombre": "Pikachu",
+            "imagen": "images/pikachu.jpg",
+            "categoria": "Pokémon",
+            "precio": "$15,000 cop",
+            "descripcion": "El Pokémon eléctrico más popular",
+            "caracteristicas": [
+                "Material: Metal esmaltado",
+                "Tamaño: 2.5cm",
+                "Color amarillo brillante"
+            ]
+        },
+        {
+            "id": "stitch",
+            "nombre": "Stitch",
+            "imagen": "images/stitch.jpg",
+            "categoria": "Disney",
+            "precio": "$17,000 cop",
+            "descripcion": "El adorable experimento 626 de Lilo y Stitch",
+            "caracteristicas": [
+                "Material: Aleación de zinc",
+                "Tamaño: 3cm",
+                "Orejas en 3D"
+            ]
+        }
+    ]
+}

@@ -795,12 +795,12 @@ body::after {
 
 /* RESULTADOS DEL ESCANEO */
 .result-container {
-    display: none;
-    margin: 2rem auto 0;
-    padding: 1.5rem;
-    background-color: #111;
     border: 3px solid #FFA500;
-    max-width: 500px;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #111;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .result-container.active {
@@ -814,11 +814,12 @@ body::after {
 }
 
 .final-result {
-    padding: 1rem;
+    padding: 15px;
     background-color: #000;
     border: 2px solid #FFA500;
-    margin: 1rem 0;
+    margin: 15px 0;
     color: #fff;
+    word-wrap: break-word;
 }
 
 .final-result h3 {
@@ -830,7 +831,7 @@ body::after {
 .final-result a {
     display: inline-block;
     margin-top: 1rem;
-    color: #FFA500;
+    color: #000000;
     text-decoration: none;
     font-weight: bold;
 }
@@ -859,4 +860,102 @@ body::after {
     #prediction-container {
         font-size: 0.7rem;
     }
+}
+
+/* ESTILOS PARA RESULTADOS DE PINES */
+.pin-result {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #fff;
+}
+
+.pin-image-container:empty {
+    display: none;
+}
+
+/* Ajusta el ancho del texto si no hay imagen */
+.pin-details {
+    flex: 1;
+    min-width: 200px;
+}
+
+.pin-image-container {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+    border: 2px solid #FFA500;
+    padding: 10px;
+    background: #000;
+}
+
+.pin-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.confidence-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #FFA500;
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.pin-details {
+    flex: 2;
+    min-width: 250px;
+}
+
+.pin-details h3 {
+    color: #FFA500;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.pin-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.category {
+    background: #333;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.price {
+    color: #FFA500;
+    font-weight: bold;
+}
+
+.description {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.features {
+    margin-top: 10px;
+    padding-left: 20px;
+    color: #FFA500;
+}
+
+.features li {
+    margin-bottom: 5px;
+}
+
+/* Asegurar que el contenedor de resultados sea visible */
+#scan-result {
+    display: none;
+}
+
+#scan-result.active, #scan-result[style*="display: block"] {
+    display: block !important;
 }
